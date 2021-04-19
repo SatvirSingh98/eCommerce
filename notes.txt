@@ -1,0 +1,3 @@
+When to use QuerySet?
+--> If you want to be able perform some operation on an existing queryset in a chain of queryset calls you can use a QuerySet.
+--> In ProductQuerySet we overide the all() method to get filtered by active items.

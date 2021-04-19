@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <div class="col-sm-6 col-12">
+                <h2>Products</h2>
+                <ul>
+                    {% for product in product_list %}
+                    <li>
+                        {% if not product.featured %}
+                            <a href="{% url 'products:detail' product.pk %}">
+                                <h4>{{ product.title }}</h4>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'products:FeaturedDetail' product.pk %}">
+                                <h4>{{ product.title }}</h4>
+                            </a>
+                        {% endif %}
+                    </li>
+                    {% empty %}
+                    <h3>Product list is empty.</h3>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

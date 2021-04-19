@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <div class="col-sm-6 col-12">
+                <h3>Description: </h3>
+                <p>{{ product.description }} </p>
+                <h3>Price: </h3>
+                <p>₹ {{ product.price }} </p>
+
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="image" class="img-fluid rounded">
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

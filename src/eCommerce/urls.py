@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 from .views import (about_page, contact_page, index,
                     login_page, register_page)
@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
     path('admin/', admin.site.urls),
+    path('products/', include('products.urls')),
 ]
 
 if settings.DEBUG:
