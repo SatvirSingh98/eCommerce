@@ -1,5 +1,9 @@
 import os
+
 from django.db import models
+from django.db.models.signals import pre_save
+
+from .utils import unique_slug_generator
 
 
 ##############################################################
@@ -33,10 +37,10 @@ class ProductQuerySet(models.QuerySet):
 
 # creating custom model manager
 class ProductManager(models.Manager):
-    def get_by_id(self, pk):
-        qs = self.get_queryset().filter(pk=pk, active=True)
-        # self.get_queryset() = Product.objects
-        return qs.first() if qs.count() == 1 else None
+    # def get_by_id(self, pk):
+    #     qs = self.get_queryset().filter(pk=pk, active=True)
+    #     # self.get_queryset() = Product.objects
+    #     return qs.first() if qs.count() == 1 else None
 
     def get_featured(self):
         return self.get_queryset().filter(featured=True)
@@ -51,6 +55,7 @@ class ProductManager(models.Manager):
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     image = models.ImageField(
@@ -63,3 +68,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def product_pre_save_reciever(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(product_pre_save_reciever, sender=Product)

@@ -1,8 +1,7 @@
 from django.urls import path
 
-from .views import (ProductListView, ProductDetailView,
-                    ProductFeaturedListView, ProductFeaturedDetailView)
-
+from .views import (FeaturedDetailView, FeaturedListView,
+                    ProductDetailView, ProductListView)
 
 app_name = 'products'
 
@@ -10,12 +9,12 @@ urlpatterns = [
     path('', ProductListView.as_view(),
          name='list'),
 
-    path('<int:pk>/', ProductDetailView.as_view(),
-         name='detail'),
-
-    path('featured/', ProductFeaturedListView.as_view(),
+    path('featured/', FeaturedListView.as_view(),
          name='FeaturedList'),
 
-    path('featured/<int:pk>/', ProductFeaturedDetailView.as_view(),
-         name='FeaturedDetail')
+    path('featured/<slug:slug>/', FeaturedDetailView.as_view(),
+         name='FeaturedDetail'),
+
+    path('<slug:slug>/', ProductDetailView.as_view(),
+         name='detail'),
 ]

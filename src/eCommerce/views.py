@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, reverse
 
@@ -48,6 +48,11 @@ def login_page(request):
         else:
             return HttpResponse('Your account is inactive')
     return render(request, 'auth/login.html', {'form': form})
+
+
+def logout_page(request):
+    logout(request)
+    return redirect(reverse('index'))
 
 
 def register_page(request):

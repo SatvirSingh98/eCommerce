@@ -1,5 +1,5 @@
-from django.http import Http404
-# from django.shortcuts import render, get_object_or_404
+# from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 
 from .models import Product
@@ -25,15 +25,29 @@ class ProductListView(ListView):
 
 
 class ProductDetailView(DetailView):
-    # model = Product not needed anymore because get_object
+    # model = Product ;not needed anymore because get_object
     # will return the query.
     template_name = 'products/product_detail.html'
 
+    # lookup by slug
     def get_object(self):
-        instance = Product.objects.get_by_id(self.kwargs.get('pk'))
-        if instance is None:
-            raise Http404('No match found')
-        return instance
+        slug = self.kwargs.get('slug')
+        # try:
+        #     instance = Product.objects.get(slug=slug, active=True)
+        # except Product.DoesNotExist:
+        #     raise Http404('Not Found...')
+        # except Exception:
+        #     raise Http404('Huh??')
+        # return instance
+        # or
+        return get_object_or_404(Product, slug=slug, active=True)
+
+    # lookup by id
+    # def get_object(self):
+    #     instance = Product.objects.get_by_id(self.kwargs.get('pk'))
+    #     if instance is None:
+    #         raise Http404('No match found')
+    #     return instance
 
     # Just to print the context of this class
     # def get_context_data(self, **kwargs):
@@ -75,11 +89,15 @@ class ProductDetailView(DetailView):
     # return render(request, 'products/product_detail.html', context)
 
 
-class ProductFeaturedListView(ListView):
+class FeaturedListView(ListView):
     queryset = Product.objects.all().featured()
     template_name = 'products/product_list.html'
 
 
-class ProductFeaturedDetailView(DetailView):
-    queryset = Product.objects.all().featured()
+class FeaturedDetailView(DetailView):
     template_name = 'products/product_detail.html'
+
+    def get_object(self):
+        slug = self.kwargs.get('slug')
+        obj = get_object_or_404(Product, slug=slug, active=True, featured=True)
+        return obj

@@ -10,11 +10,11 @@
                     {% for product in product_list %}
                     <li>
                         {% if not product.featured %}
-                            <a href="{% url 'products:detail' product.pk %}">
+                            <a href="{% url 'products:detail' product.slug %}">
                                 <h4>{{ product.title }}</h4>
                             </a>
                         {% else %}
-                            <a href="{% url 'products:FeaturedDetail' product.pk %}">
+                            <a href="{% url 'products:FeaturedDetail' product.slug %}">
                                 <h4>{{ product.title }}</h4>
                             </a>
                         {% endif %}

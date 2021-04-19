@@ -7,3 +7,7 @@ When to use QuerySet?
     eg: Product.objects.get_featured().active()
 --> We can also alter the functionality of default ones using QuerySet functions in models.
     eg: Like we alter all() func using active() QuerySet func by overriding get_queryset() func in Product model manager.
+
+Now for using unique slug names we have used utils.py along with django signals.
+--> pre_save is used to do something before the model is saved in the database. So unique slugs
+    are created aotomatically before instance is saved.
