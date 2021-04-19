@@ -76,10 +76,10 @@ class ProductDetailView(DetailView):
 
 
 class ProductFeaturedListView(ListView):
-    queryset = Product.objects.get_featured()
+    queryset = Product.objects.all().featured()
     template_name = 'products/product_list.html'
 
 
 class ProductFeaturedDetailView(DetailView):
-    queryset = Product.objects.get_featured()
+    queryset = Product.objects.all().featured()
     template_name = 'products/product_detail.html'

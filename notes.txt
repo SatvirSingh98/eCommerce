@@ -1,3 +1,9 @@
 When to use QuerySet?
 --> If you want to be able perform some operation on an existing queryset in a chain of queryset calls you can use a QuerySet.
 --> In ProductQuerySet we overide the all() method to get filtered by active items.
+--> ModelManager functions are used like this:
+    eg: Product.objects.featured() similar to default manager
+--> QuerySet in models are used for chaining functionality to default ones.
+    eg: Product.objects.get_featured().active()
+--> We can also alter the functionality of default ones using QuerySet functions in models.
+    eg: Like we alter all() func using active() QuerySet func by overriding get_queryset() func in Product model manager.

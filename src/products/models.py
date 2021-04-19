@@ -22,16 +22,30 @@ def image_upload_path(instance, filename):
 
 
 ##############################################################
+# creating custom queryset
+class ProductQuerySet(models.QuerySet):
+    def featured(self):
+        return self.filter(featured=True)
+
+    def active(self):
+        return self.filter(active=True)
+
+
 # creating custom model manager
 class ProductManager(models.Manager):
     def get_by_id(self, pk):
-        qs = self.get_queryset().filter(pk=pk)
+        qs = self.get_queryset().filter(pk=pk, active=True)
         # self.get_queryset() = Product.objects
-
         return qs.first() if qs.count() == 1 else None
 
     def get_featured(self):
         return self.get_queryset().filter(featured=True)
+
+    def get_queryset(self):
+        return ProductQuerySet(self.model, self._db)
+
+    def all(self):
+        return self.get_queryset().active()
 ##############################################################
 
 
@@ -42,6 +56,7 @@ class Product(models.Model):
     image = models.ImageField(
         upload_to=image_upload_path, null=True, blank=True)
     featured = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     # this is not overriding defaults, instead extending it's functionality.
     objects = ProductManager()
