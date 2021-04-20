@@ -1,0 +1,52 @@
+{% url 'index' as home %}
+{% url 'contact' as contact %}
+{% url 'about' as about %}
+{% url 'login' as login %}
+{% url 'logout' as logout %}
+{% url 'register' as register %}
+{% url 'products:list' as prod_url %}
+{% url 'products:FeaturedList' as featured_url %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e3f2fd;"">
+    <div class=" container">
+        <a class="navbar-brand" href="{{ home }}">eCommerce</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% if request.path == about %}active{% endif %}">
+                    <a class="nav-link" href="{{ about }}">About</a>
+                </li>
+                <li class="nav-item {% if request.path == contact %}active{% endif %}">
+                    <a class="nav-link" href="{{ contact }}">Contact <span class="sr-only">(current)</span></a>
+                </li>
+                <li
+                    class="nav-item dropdown {% if request.path == prod_url or request.path == featured_url %}active{% endif %}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Products
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ prod_url }}">All Products</a>
+                        <a class="dropdown-item" href="{{ featured_url }}">Featured</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0 mr-auto">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
+
+            {% if request.user.is_authenticated %}
+            <a href="{{ logout }}" class="btn btn-outline-info my-2 my-sm-0" role="button">Logout</a>
+            {% else %}
+            <a href="{{ login }}" class="btn btn-outline-info my-2 my-sm-0 mr-1" role="button">Log in</a>
+            <a href="{{ register }}" class="btn btn-primary my-2 my-sm-0" role="button">Sign up</a>
+            {% endif %}
+
+        </div>
+    </div>
+</nav>
