@@ -1,30 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col d-flex justify-content-center">
-            <div class="col-sm-6 col-12">
-                <h2>Products</h2>
-                <ul>
-                    {% for product in product_list %}
-                    <li>
-                        {% if not product.featured %}
-                            <a href="{% url 'products:detail' product.slug %}">
-                                <h4>{{ product.title }}</h4>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'products:FeaturedDetail' product.slug %}">
-                                <h4>{{ product.title }}</h4>
-                            </a>
-                        {% endif %}
-                    </li>
-                    {% empty %}
+<div class="container mt-4">
+    <div class="row mx-auto">
+        {% for product in product_list %}
+            <div class="col">
+                {% include 'products/snippets/product-card.html' with instance=product %}
+                {% if forloop.counter|divisibleby:3 %}
+                    </div></div><div class="row mx-auto"><div class="col-12"><hr></div>
+                {% else %}
+                    </div>
+                {% endif %}
+                {% empty %}
                     <h3>Product list is empty.</h3>
-                    {% endfor %}
-                </ul>
             </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}
