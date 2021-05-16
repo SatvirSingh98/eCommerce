@@ -15,7 +15,7 @@ urlpatterns = [
     path('login/', login_page, name='login'),
     path('logout/', logout_page, name='logout'),
     path('register/', register_page, name='register'),
-    path('products/', include('products.urls')),
+    path('products/', include('apps.products.urls')),
     path('admin/', admin.site.urls),
 ]
 
