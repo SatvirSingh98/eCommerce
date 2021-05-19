@@ -77,8 +77,7 @@ class ProductDetailView(DetailView):
     # else:
     #     raise Http404('No match found')
 
-    # objects is default model manager and we can also make
-    # custom model managers to make more efficient queries.
+    # objects is default model manager and we can also make custom model managers to make more efficient queries.
 
     # or
     # instance = Product.objects.get_by_id(pk)

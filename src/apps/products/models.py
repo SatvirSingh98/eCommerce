@@ -2,6 +2,7 @@ import os
 
 from django.db import models
 from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.urls import reverse
 
 from .utils import unique_slug_generator
@@ -12,14 +13,11 @@ from .utils import unique_slug_generator
 # Note: Do not use this method for large files instead use service like aws.
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
-    print(os.path.splitext(base_name))
     name, ext = os.path.splitext(base_name)
     return name, ext
 
 
 def image_upload_path(instance, filename):
-    print(instance)
-    print(filename)
     name, ext = get_filename_ext(filename)
     new_filename = f"{instance}{ext}"
     return f"products/{instance}/{new_filename}"
@@ -56,7 +54,7 @@ class ProductManager(models.Manager):
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
-    slug = models.SlugField(null=True, blank=True, unique=True)
+    slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     image = models.ImageField(
@@ -74,9 +72,7 @@ class Product(models.Model):
         return reverse('products:detail', kwargs={'slug': self.slug})
 
 
+@receiver(pre_save, sender=Product)
 def product_pre_save_reciever(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
-
-
-pre_save.connect(product_pre_save_reciever, sender=Product)
