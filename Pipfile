@@ -15,6 +15,7 @@ argon2-cffi = "*"
 autopep8 = "*"
 flake8 = "*"
 django-debug-toolbar = "*"
+flake8-isort = "*"
 
 [requires]
 python_version = "3.9"

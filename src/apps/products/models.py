@@ -6,7 +6,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 
-from .utils import unique_slug_generator
+from eCommerce.utils import unique_slug_generator
 
 
 ##############################################################
@@ -37,7 +37,8 @@ class ProductQuerySet(models.QuerySet):
     def search(self, query):
         lookups = (
             Q(title__icontains=query) |
-            Q(description__icontains=query)
+            Q(description__icontains=query) |
+            Q(producttag__title__icontains=query)
         )
         return self.filter(lookups).distinct()
 

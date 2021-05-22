@@ -21,3 +21,24 @@ For search functionality:
 
 Search bar on page will come from same snippet file for same functionality.
 We will implement queries using Q from model managers.
+
+For different search-tags we will create Tag app seperately.
+--> To set relation between Product and ProductTag we will use ManyToManyField relation.
+
+Now to do a reverse lookup, i.e, how to get product based on tag or vice-versa.
+--> Run the following commands in the shell to understand:
+    1. from apps.tags.models import ProductTag
+    2. ProductTag.objects.all()
+    3. Choose any: shirt = ProductTag.objects.last()
+    4. shirt.__dict__
+    5. shirt.products.all() :- this will give all the related products.
+    6. shirt.products.all().first()
+
+    For reverse of the above:
+    1. from apps.products.models import Product
+    2. Product.objects.all()
+    3. Choose any: shirt = Product.objects.first()
+    4. shirt.__dict__
+    5. shirt.<related model name in lowercase without spaces>_set.all(): shirt.producttag_set.all()
+    6. shirt.producttag_set.filter(title__icontains='t-shirt<or any other tag>'): it will give the product.
+--> To add this to search: Q(<model_name>__title__icontains='query')

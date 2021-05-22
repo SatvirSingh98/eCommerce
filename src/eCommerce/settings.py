@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
     # our apps
     'apps.products',
     'apps.search',
+    'apps.tags',
 
     # third-party apps
     'crispy_forms',
