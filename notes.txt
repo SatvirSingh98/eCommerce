@@ -11,3 +11,13 @@ When to use QuerySet?
 Now for using unique slug names we have used utils.py along with django signals.
 --> pre_save is used to do something before the model is saved in the database. So unique slugs
     are created aotomatically before instance is saved.
+
+For search functionality:
+--> Either we can use {{ request.GET.q }} in the template or
+--> We can set query parameter using get_context_method:
+    --> context['query'] = self.request.GET.q
+    --> and then in the template use {{ query }}
+    --> better to use context method as we can add more logic to it through views.
+
+Search bar on page will come from same snippet file for same functionality.
+We will implement queries using Q from model managers.

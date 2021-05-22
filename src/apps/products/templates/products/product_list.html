@@ -2,6 +2,14 @@
 
 {% block content %}
 <div class="container mt-4">
+    {% if query %}
+        <div class="row my-3">
+            <div class="col-12 col-md-10 col-lg-8 mx-auto">
+                {% include 'search/snippets/search-form.html' %}
+            </div>
+        </div>
+    {% endif %}
+
     <div class="row mx-auto">
         {% for product in product_list %}
             <div class="col">

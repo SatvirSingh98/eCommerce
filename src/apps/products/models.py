@@ -1,6 +1,7 @@
 import os
 
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.urls import reverse
@@ -33,6 +34,13 @@ class ProductQuerySet(models.QuerySet):
     def active(self):
         return self.filter(active=True)
 
+    def search(self, query):
+        lookups = (
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
+        )
+        return self.filter(lookups).distinct()
+
 
 # creating custom model manager
 class ProductManager(models.Manager):
@@ -49,6 +57,9 @@ class ProductManager(models.Manager):
 
     def all(self):
         return self.get_queryset().active()
+
+    def search(self, query):
+        return self.get_queryset().active().search(query)
 ##############################################################
 
 
@@ -61,6 +72,7 @@ class Product(models.Model):
         upload_to=image_upload_path, null=True, blank=True)
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     # this is not overriding defaults, instead extending it's functionality.
     objects = ProductManager()
