@@ -68,3 +68,12 @@ How django works with sessions:
  s = Session.objects.get(pk='session_key')
  s.get_decoded()
  ```
+
+ When we retrieve the cart_id it will give the latest cart_id.
+ To delete the other cart_id(s): Cart.objects.exclude(id=cart_id).delete()
+
+ In the cart functionality:
+--> First we check if the cart_id exists or not.
+--> If the cart_id does not exist create a new one and set it to the session.
+--> If it already exists then set that id to the session.
+--> To delete a session => del request.session['cart_id']
