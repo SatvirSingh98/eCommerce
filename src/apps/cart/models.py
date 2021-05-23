@@ -1,5 +1,9 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import m2m_changed, pre_save
+from django.dispatch import receiver
 
 from apps.products.models import Product
 
@@ -41,6 +45,8 @@ class Cart(models.Model):
     # for blank cart blank is True
     products = models.ManyToManyField(Product, blank=True)
     total = models.DecimalField(decimal_places=2, max_digits=65, default=0.00)
+    subtotal = models.DecimalField(decimal_places=2, max_digits=65, default=0.00)
+    tax = models.DecimalField(default=18.00, max_digits=20, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -48,3 +54,27 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+# m2m_changed is used because of ManyToManyField
+@receiver(m2m_changed, sender=Cart.products.through)
+def cart_m2m_changed_reciever(sender, action, instance, *args, **kwargs):
+    if action in ['post_add', 'post_remove', 'post_clear']:
+        products = instance.products.all()
+        subtotal = 0
+        for item in products:
+            subtotal += item.price
+
+        if instance.subtotal != subtotal:
+            instance.subtotal = subtotal
+            instance.save()
+
+
+# pre_save is used to change the total amount based on subtotal
+@receiver(pre_save, sender=Cart)
+def cart_pre_save_reciever(sender, instance, *args, **kwargs):
+    if instance.subtotal > 0:
+        tax = instance.subtotal * (instance.tax * Decimal('0.01'))
+        instance.total = instance.subtotal + tax
+    else:
+        instance.total = 0.00
