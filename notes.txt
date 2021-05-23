@@ -42,3 +42,29 @@ Now to do a reverse lookup, i.e, how to get product based on tag or vice-versa.
     5. shirt.<related model name in lowercase without spaces>_set.all(): shirt.producttag_set.all()
     6. shirt.producttag_set.filter(title__icontains='t-shirt<or any other tag>'): it will give the product.
 --> To add this to search: Q(<model_name>__title__icontains='query')
+
+To save the products in the cart for a certain period of time we will use sessions.
+--> dictionary values.
+--> request.session will give the info of session of current user.
+--> request.session.session_key will give the current session's key.
+--> when the user logout the session ends.
+--> we can set variable to session dictionary in different view and can use it on another   view.
+eg.- request.session['name'] = 'satvir' in cart view and we can use it in index view or any other view using request.session.get('name')
+
+In the cart functionality:
+--> First we check if the cart_id exists or not.
+
+How django works with sessions:
+--> We start the browser, request the page from django and then it creates a new session.
+--> That session data is stores in database as session_key, session_data and it's expiry_date.
+--> Then django will return the requested page with session_key.
+--> In frontend we store that session_key in a cookie.
+--> By doing this, action performed by user to change it's data in frontend will also get changed in database.
+    --> If user change the data, a request and session_key of that user is sent to django and the corresponding session_data is modified in database.
+    --> Changes in the browser are reflected on page refresh and redirect.
+    --> To prevent refreshing everytime we can use AJAX.
+ ```
+ from django.contrib.sessions.models import Session
+ s = Session.objects.get(pk='session_key')
+ s.get_decoded()
+ ```

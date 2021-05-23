@@ -6,6 +6,7 @@
 {% url 'register' as register %}
 {% url 'products:list' as prod_url %}
 {% url 'products:FeaturedList' as featured_url %}
+{% url 'cart:cart-list' as cart %}
 
 
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e3f2fd;"">
@@ -22,7 +23,7 @@
                     <a class="nav-link" href="{{ about }}">About</a>
                 </li>
                 <li class="nav-item {% if request.path == contact %}active{% endif %}">
-                    <a class="nav-link" href="{{ contact }}">Contact <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ contact }}">Contact<span class="sr-only">(current)</span></a>
                 </li>
                 <li
                     class="nav-item dropdown {% if request.path == prod_url or request.path == featured_url %}active{% endif %}">
@@ -34,6 +35,9 @@
                         <a class="dropdown-item" href="{{ prod_url }}">All Products</a>
                         <a class="dropdown-item" href="{{ featured_url }}">Featured</a>
                     </div>
+                </li>
+                <li class="nav-item {% if request.path == cart %}active{% endif %}">
+                    <a class="nav-link" href="{{ cart }}">Cart<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
 

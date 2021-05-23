@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+            {% include 'search/snippets/search-form.html' %}
+        </div>
+    </div>
+
+    <div class="row pt-3">
+        {% if query %}
+            {% for product in product_list %}
+                <div class="col">
+                    {% include 'products/snippets/product-card.html' with instance=product %}
+                    {% if forloop.counter|divisibleby:3 %}
+                        </div></div><div class="row"><div class="col-12"><hr></div>
+                    {% else %}
+                        </div>
+                    {% endif %}
+            {% empty %}
+                <h3>Product list is empty.</h3>
+                <div class="col">
+                    <h1 class="text-center">Cannot find the product</h1>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <h1 class="text-center">Cannot find the product</h1>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
