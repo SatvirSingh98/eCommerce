@@ -27,3 +27,12 @@ def unique_slug_generator(instance, new_slug=None):
         )
         return unique_slug_generator(instance, new_slug=new_slug)
     return slug
+
+
+def unique_order_id_generator(instance):
+    new_order_id = random_string_generator().upper()
+    class_ = instance.__class__
+    qs_exists = class_.objects.filter(order_id=new_order_id).exists()
+    if qs_exists:
+        return unique_order_id_generator(instance)
+    return new_order_id

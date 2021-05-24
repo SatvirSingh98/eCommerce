@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'apps.search',
     'apps.tags',
     'apps.cart',
+    'apps.orders',
 
     # third-party apps
     'crispy_forms',

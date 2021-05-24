@@ -32,6 +32,11 @@
                 <tr>
                     <td style="border-top: None;"><b>Total:</b> {{ cart.total }}</td>
                 </tr>
+                <tr>
+                    <td style="border-top: None;"><a href="{% url 'cart:checkout' %}"
+                            class="btn btn-danger btn-block">Checkout</a></td>
+                </tr>
+
 
             </tbody>
         </table>

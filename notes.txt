@@ -77,3 +77,12 @@ How django works with sessions:
 --> If the cart_id does not exist create a new one and set it to the session.
 --> If it already exists then set that id to the session.
 --> To delete a session => del request.session['cart_id']
+
+We will set the cart in context data of product DetailView to check whether the product is already in the cart or not.
+
+CHECKOUT PROCESS:-
+- Orders/Invoices component:
+    --> Connecting the billing profile.
+    --> Shipping and Billing Address
+    --> Cart
+    --> Status -- Shipped or Cancelled?
