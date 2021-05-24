@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import home
+from .views import cart_home, cart_update
 
 app_name = 'cart'
 
 urlpatterns = [
-    path('', home, name='cart-list'),
+    path('', cart_home, name='home'),
+    path('update/', cart_update, name='update'),
 ]

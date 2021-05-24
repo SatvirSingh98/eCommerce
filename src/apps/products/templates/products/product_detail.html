@@ -10,11 +10,11 @@
         <div class="col-sm-6 col-md-6">
             <h3>Price: </h3>
             <p>₹ {{ product.price }}</p>
+            {% include 'cart/snippets/update-cart.html' with product=product cart=cart %}
             {% if product.image %}
                 <img src="{{ product.image.url }}" alt="image" class="img-fluid rounded">
             {% endif %}
         </div>
     </div>
-</div>
 </div>
 {% endblock content %}

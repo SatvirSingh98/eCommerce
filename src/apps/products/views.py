@@ -2,6 +2,8 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 
+from apps.cart.models import Cart
+
 from .models import Product
 
 
@@ -41,6 +43,12 @@ class ProductDetailView(DetailView):
         # return instance
         # or
         return get_object_or_404(Product, slug=slug, active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart_obj, _ = Cart.objects.create_or_get(self.request)
+        context['cart'] = cart_obj
+        return context
 
     # lookup by id
     # def get_object(self):
