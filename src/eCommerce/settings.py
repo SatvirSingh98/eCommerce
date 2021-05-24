@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.tags',
     'apps.cart',
     'apps.orders',
+    'apps.accounts',
 
     # third-party apps
     'crispy_forms',
@@ -149,3 +150,4 @@ MEDIA_ROOT = BASE_DIR.parent / "static_cdn" / "media_root"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGOUT_REDIRECT_URL = '/'

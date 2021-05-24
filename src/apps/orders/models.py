@@ -1,3 +1,5 @@
+from decimal import Decimal as D
+
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -28,7 +30,7 @@ class Order(models.Model):
         return f'Cart {self.cart} - {self.order_id}'
 
     def update_total(self):
-        self.total = self.cart.total + self.shipping_charges
+        self.total = D(self.cart.total) + D(self.shipping_charges)
         self.save()
         return self.total
 
@@ -57,6 +59,6 @@ def post_save_order(sender, instance, created, *args, **kwargs):
 @receiver(pre_save, sender=Order)
 def shipping_pre_save_reciever(sender, instance, *args, **kwargs):
     if instance.shipping_charges > 0:
-        instance.total = instance.shipping_charges + instance.cart.total
+        instance.total = D(instance.shipping_charges) + D(instance.cart.total)
     else:
         instance.total = instance.cart.total

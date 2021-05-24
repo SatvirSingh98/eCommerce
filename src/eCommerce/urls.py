@@ -4,21 +4,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import (about_page, contact_page, index, login_page, logout_page,
-                    register_page)
+from .views import about_page, contact_page, index
 
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
     path('', index, name='index'),
     path('about/', about_page, name='about'),
     path('contact/', contact_page, name='contact'),
-    path('login/', login_page, name='login'),
-    path('logout/', logout_page, name='logout'),
-    path('register/', register_page, name='register'),
     path('admin/', admin.site.urls),
     path('products/', include('apps.products.urls')),
     path('search/', include('apps.search.urls')),
     path('cart/', include('apps.cart.urls')),
+    path('accounts/', include('apps.accounts.urls')),
 ]
 
 if settings.DEBUG:
