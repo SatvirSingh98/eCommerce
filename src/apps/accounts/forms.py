@@ -7,7 +7,7 @@ User = get_user_model()
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
         attrs={
-            'class': 'form-control',
+            'class': 'form-control mb-2',
             'placeholder': 'username'
         }
     ), max_length=20)
