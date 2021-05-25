@@ -53,7 +53,9 @@ class Cart(models.Model):
     objects = CartManager()
 
     def __str__(self):
-        return str(self.id)
+        if self.user is None:
+            return f"(Cart-{self.id}) Guest-{self.id}"
+        return f"(Cart-{self.id}) {self.user.username} - {self.user.email}"
 
 
 # m2m_changed is used because of ManyToManyField

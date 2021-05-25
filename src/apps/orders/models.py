@@ -27,7 +27,7 @@ class Order(models.Model):
     total = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
 
     def __str__(self):
-        return f'Cart {self.cart} - {self.order_id}'
+        return f'{self.cart} - {self.order_id}'
 
     def update_total(self):
         self.total = D(self.cart.total) + D(self.shipping_charges)

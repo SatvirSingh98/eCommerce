@@ -86,3 +86,15 @@ CHECKOUT PROCESS:-
     --> Shipping and Billing Address
     --> Cart
     --> Status -- Shipped or Cancelled?
+
+- Billing app/component:
+    --> Billing profile
+        --> User or Email(Guest Email)
+        --> Generate payment processor token (Stripe or Braintree)
+
+- Cart (Checkout View):
+    --> Login/Register
+    --> Shipping address
+    --> Billing Info
+        --> Billing address
+        --> Credit card/Payment
