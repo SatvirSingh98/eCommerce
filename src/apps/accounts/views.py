@@ -42,6 +42,11 @@ def login_view(request):
             login(request, user)
             form = LoginForm()
 
+            try:
+                del request.session['guest_email_id']
+            except Exception:
+                pass
+
             if is_safe_url(redirect_path, request.get_host()):
                 return redirect(redirect_path)
             else:

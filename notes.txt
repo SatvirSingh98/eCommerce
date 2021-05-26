@@ -98,3 +98,7 @@ CHECKOUT PROCESS:-
     --> Billing Info
         --> Billing address
         --> Credit card/Payment
+
+Associating billing profile to order:
+--> Make sure that guest email gets deleted after successful login.
+--> First make sure the billing profile exist or not.
