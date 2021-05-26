@@ -3,7 +3,24 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from apps.accounts.models import GuestEmail
+
 User = settings.AUTH_USER_MODEL
+
+
+class BillingProfileManager(models.Manager):
+    def create_or_get(self, request):
+        user = request.user
+        guest_email_id = request.session.get('guest_email_id')
+        created = False
+        obj = None
+        if user.is_authenticated:
+            obj, created = self.model.objects.get_or_create(user=user, email=user.email)
+        elif guest_email_id is not None:
+            guest_email = GuestEmail.objects.get(id=guest_email_id)
+            obj, created = self.model.objects.get_or_create(email=guest_email)
+            created = True
+        return obj, created
 
 
 # we want to create billing profile when the user is created.
@@ -13,6 +30,8 @@ class BillingProfile(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+
+    objects = BillingProfileManager()
 
     def __str__(self):
         return self.email
