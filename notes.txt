@@ -102,3 +102,8 @@ CHECKOUT PROCESS:-
 Associating billing profile to order:
 --> Make sure that guest email gets deleted after successful login.
 --> First make sure the billing profile exist or not.
+
+Important bug: When the cart is created with some stuff, and at the checkout if we continue as guest
+all the things will work but when we login as user after we continue as guest then there is no change in the order
+even if I add or remove stuff from the cart. This does not happen if we directly continue as registered user.
+This also does not happen if we continue as guest and do not login afterwards.
