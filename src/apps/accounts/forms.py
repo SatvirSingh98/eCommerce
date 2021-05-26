@@ -75,3 +75,11 @@ class RegisterForm(forms.Form):
         if pass1 != pass2:
             raise forms.ValidationError('Passwords does not match')
         return data
+
+
+class GuestForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'email'
+        }), required=True)

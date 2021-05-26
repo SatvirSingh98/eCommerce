@@ -2,13 +2,17 @@ from django.contrib.auth import authenticate, get_user_model, login
 from django.shortcuts import redirect, render
 from django.utils.http import is_safe_url
 
-from .forms import LoginForm, RegisterForm
+from .forms import GuestForm, LoginForm, RegisterForm
+from .models import GuestEmail
 
 User = get_user_model()
 
 
-def login_excluded(redirect_to):
-    """ This decorator is to prevent visiting the login_page after the user is authenticated """
+def auth_excluded(redirect_to):
+    """
+    This decorator is to prevent visiting the login or register
+    view after the user is authenticated.
+    """
     def _method_wrapper(view_method):
         def _arguments_wrapper(request, *args, **kwargs):
             if request.user.is_authenticated:
@@ -18,8 +22,8 @@ def login_excluded(redirect_to):
     return _method_wrapper
 
 
-@login_excluded('/')
-def login_page(request):
+@auth_excluded('/')
+def login_view(request):
     form = LoginForm(request.POST or None)
 
     # for redirecting after login
@@ -47,7 +51,8 @@ def login_page(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
-def register_page(request):
+@auth_excluded('/')
+def register_view(request):
     form = RegisterForm(request.POST or None)
     if form.is_valid():
         username = form.cleaned_data.get('username')
@@ -59,3 +64,23 @@ def register_page(request):
         return redirect('accounts:login')
 
     return render(request, 'accounts/register.html', {'form': form})
+
+
+def guest_register_view(request):
+    form = GuestForm(request.POST or None)
+
+    # for redirecting after login
+    next_ = request.GET.get('next')
+    next_post = request.POST.get('next')
+    redirect_path = next_ or next_post
+
+    if form.is_valid():
+        email = form.cleaned_data.get('email')
+        guest_email = GuestEmail.objects.create(email=email)
+        request.session['guest_email_id'] = guest_email.id
+
+        if is_safe_url(redirect_path, request.get_host()):
+            return redirect(redirect_path)
+        else:
+            return redirect('accounts:register')
+    return redirect('accounts:register')

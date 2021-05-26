@@ -6,13 +6,13 @@
         <div class="row">
             <div class="col-12 col-md-6">
                 <p class="lead text-center">Login</p>
-                {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
+                {% url 'accounts:login' as login %}
+                {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri action_url=login %}
             </div>
             <div class="col-12 col-md-6">
                 <p class="lead text-center">Continue as Guest</p>
-                <label for="Guest Email">Email address</label>
-                <input type="email" class="form-control" id="Guest Email" placeholder="name@example.com">
-                <button type="submit" class="btn btn-primary my-2">Submit</button>
+                {% url 'accounts:guest-register' as guest_register_url %}
+                {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
             </div>
         </div>
     {% else %}

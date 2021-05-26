@@ -1,4 +1,6 @@
-<form method="POST" action="{% url 'accounts:login' %}">
+{% url 'accounts:login' as login %}
+
+<form method="POST" action="{{ action_url }}">
     {% csrf_token %}
 
     {% if next_url %}
@@ -6,5 +8,5 @@
     {% endif %}
 
     {{ form.as_table }}
-    <button type="submit" class="btn btn-primary my-2">Login</button>
+    <button type="submit" class="btn btn-primary my-2">Submit</button>
 </form>
