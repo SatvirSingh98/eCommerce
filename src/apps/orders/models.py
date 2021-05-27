@@ -14,14 +14,15 @@ ORDER_STATUS_CHOICES = (
     ('paid', 'Paid'),
     ('shipped', 'Shipped'),
     ('refunded', 'Refunded'),
-    ('cancelled', 'Cancelled')
+    ('cancelled', 'Cancelled'),
+    ('delivered', 'Delivered')
 )
 
 
 class OrderManager(models.Manager):
     def create_or_get(self, billing_profile, cart_obj):
         created = False
-        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True)
+        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True, status='created')
         if qs.count() == 1:
             obj = qs.first()
         else:
@@ -60,6 +61,17 @@ class Order(models.Model):
         self.total = D(self.cart.total) + D(self.shipping_charges)
         self.save()
         return self.total
+
+    def checkout_success(self):
+        if self.billing_profile and self.shipping_address and self.billing_address and self.total:
+            return True
+        return False
+
+    def order_paid(self):
+        if self.checkout_success():
+            self.status = 'paid'
+            self.save()
+        return self.status
 
 
 @receiver(pre_save, sender=Order)

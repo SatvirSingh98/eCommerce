@@ -39,9 +39,12 @@
             <h1>Checkout</h1>
             <p>SubTotal: {{ object.cart.subtotal }}</p>
             <p>Tax: {{ object.cart.tax }} %</p>
-            <p>Shipping Charges: {{ object.shipping_total }}</p>
+            <p>Shipping Charges: {{ object.shipping_charges }}</p>
             <p>Total: {{ object.total }}</p>
-            <button class="btn btn-danger">Proceed</button>
+            <form method="POST" class="form">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">Proceed To Checkout</button>
+            </form>
         {% endif %}
     {% endif %}
 </div>
