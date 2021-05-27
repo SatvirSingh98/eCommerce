@@ -17,11 +17,32 @@
             </div>
         </div>
     {% else %}
-        <h1>Checkout</h1>
-        <p>SubTotal: {{ object.cart.subtotal }}</p>
-        <p>Tax: {{ object.cart.tax }} %</p>
-        <p>Shipping Charges: {{ object.shipping_charges }}</p>
-        <p>Total: {{ object.total }}</p>
+        {% if not object.shipping_address %}
+            <div class="row">
+                <div class="col-10 col-md-6 mx-auto">
+                    <h4 class="text-center">Shipping Address</h4>
+                    <hr>
+                    {% url 'addresses:address-create' as address_create_url %}
+                    {% include 'addresses/form.html' with form=address_form action_url=address_create_url next_url=request.build_absolute_uri address_type='shipping' %}
+                </div>
+            </div>
+        {% elif not object.billing_address %}
+            <div class="row">
+                <div class="col-10 col-md-6 mx-auto">
+                    <h4 class="text-center">Billing Address</h4>
+                    <hr>
+                    {% url 'addresses:address-create' as address_create_url %}
+                    {% include 'addresses/form.html' with form=address_form action_url=address_create_url next_url=request.build_absolute_uri address_type='billing' %}
+                </div>
+            </div>
+        {% else %}
+            <h1>Checkout</h1>
+            <p>SubTotal: {{ object.cart.subtotal }}</p>
+            <p>Tax: {{ object.cart.tax }} %</p>
+            <p>Shipping Charges: {{ object.shipping_total }}</p>
+            <p>Total: {{ object.total }}</p>
+            <button class="btn btn-danger">Proceed</button>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock content %}

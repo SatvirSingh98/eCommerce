@@ -34,7 +34,9 @@ class BillingProfile(models.Model):
     objects = BillingProfileManager()
 
     def __str__(self):
-        return self.email
+        if self.user_id:
+            return f'Registered User - {self.email}'
+        return f'Guest - {self.email}'
 
 
 # We want to create the billing profile when user is created, so post_save is used.
