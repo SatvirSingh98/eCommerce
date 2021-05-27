@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
+from apps.addresses.models import Address
 from apps.billing.models import BillingProfile
 from apps.cart.models import Cart
 from eCommerce.utils import unique_order_id_generator
@@ -31,13 +32,23 @@ class OrderManager(models.Manager):
 
 class Order(models.Model):
     order_id = models.CharField(max_length=50, blank=True)
+
     billing_profile = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.CASCADE)
-    # shipping_address
-    # billing_address
+
+    shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='shipping_address',
+                                         null=True, blank=True,)
+
+    billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='billing_address',
+                                        null=True, blank=True)
+
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
+
     shipping_charges = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
+
     total = models.DecimalField(default=0.00, max_digits=65, decimal_places=2)
+
     active = models.BooleanField(default=True)
 
     objects = OrderManager()

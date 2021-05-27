@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 
 from apps.accounts.forms import GuestForm, LoginForm
 from apps.addresses.forms import AddressForm
+from apps.addresses.models import Address
 from apps.billing.models import BillingProfile
 from apps.orders.models import Order
 from apps.products.models import Product
@@ -45,6 +46,8 @@ def checkout(request):
     login_form = LoginForm()
     guest_form = GuestForm()
     address_form = AddressForm()
+    billing_address_id = request.session.get('billing_address_id')
+    shipping_address_id = request.session.get('shipping_address_id')
 
     # from billing model manager
     billing_profile, _ = BillingProfile.objects.create_or_get(request)
@@ -52,6 +55,14 @@ def checkout(request):
     if billing_profile is not None:
         # from orders model manager.
         order_obj, _ = Order.objects.create_or_get(billing_profile, cart_obj)
+        if shipping_address_id:
+            order_obj.shipping_address = Address.objects.get(id=shipping_address_id)
+            del request.session['shipping_address_id']
+        if billing_address_id:
+            order_obj.billing_address = Address.objects.get(id=billing_address_id)
+            del request.session['billing_address_id']
+        if shipping_address_id or billing_address_id:
+            order_obj.save()
 
     context = {
         'object': order_obj,
