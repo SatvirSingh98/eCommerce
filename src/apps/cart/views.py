@@ -48,11 +48,18 @@ def checkout(request):
     address_form = AddressForm()
     billing_address_id = request.session.get('billing_address_id')
     shipping_address_id = request.session.get('shipping_address_id')
+    address_qs = None
 
     # from billing model manager
     billing_profile, _ = BillingProfile.objects.create_or_get(request)
 
     if billing_profile is not None:
+        if request.user.is_authenticated:
+            address_qs = Address.objects.filter(billing_profile=billing_profile)
+        # if we want to choose specific address
+        # shipping_address_qs = address_qs.filter(address_type='shipping')
+        # billing_address_qs = address_qs.filter(address_type='billing')
+
         # from orders model manager.
         order_obj, _ = Order.objects.create_or_get(billing_profile, cart_obj)
         if shipping_address_id:
@@ -77,6 +84,7 @@ def checkout(request):
         'billing_profile': billing_profile,
         'login_form': login_form,
         'guest_form': guest_form,
-        'address_form': address_form
+        'address_form': address_form,
+        'address_qs': address_qs,
     }
     return render(request, 'cart/checkout.html', context)

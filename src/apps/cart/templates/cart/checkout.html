@@ -2,7 +2,6 @@
 
 {% block content %}
 <div class="container mt-4">
-{{ object.order_id }} -- {{ object.cart }}
     {% if not billing_profile %}
         <div class="row">
             <div class="col-12 col-md-6">
@@ -22,8 +21,16 @@
                 <div class="col-10 col-md-6 mx-auto">
                     <h4 class="text-center">Shipping Address</h4>
                     <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-5 mx-auto mb-4">
                     {% url 'addresses:address-create' as address_create_url %}
                     {% include 'addresses/form.html' with form=address_form action_url=address_create_url next_url=request.build_absolute_uri address_type='shipping' %}
+                </div>
+                <div class="col-12 col-md-6 mx-auto">
+                    {% url 'addresses:address-reuse' as address_reuse_url %}
+                    {% include 'addresses/stored_addresses.html' with address_type='shipping' next_url=request.build_absolute_uri action_url=address_reuse_url %}
                 </div>
             </div>
         {% elif not object.billing_address %}
@@ -31,8 +38,16 @@
                 <div class="col-10 col-md-6 mx-auto">
                     <h4 class="text-center">Billing Address</h4>
                     <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-5 mx-auto mb-4">
                     {% url 'addresses:address-create' as address_create_url %}
                     {% include 'addresses/form.html' with form=address_form action_url=address_create_url next_url=request.build_absolute_uri address_type='billing' %}
+                </div>
+                <div class="col-12 col-md-6 mx-auto">
+                    {% url 'addresses:address-reuse' as address_reuse_url %}
+                    {% include 'addresses/stored_addresses.html' with address_type='billing' next_url=request.build_absolute_uri action_url=address_reuse_url %}
                 </div>
             </div>
         {% else %}
