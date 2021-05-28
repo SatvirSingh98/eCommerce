@@ -77,7 +77,7 @@ def checkout(request):
                 order_obj.order_paid()
                 request.session['cart_items'] = 0
                 del request.session['cart_id']
-                return redirect('/cart/success')
+                return redirect('cart:checkout-success')
 
     context = {
         'object': order_obj,
@@ -88,3 +88,7 @@ def checkout(request):
         'address_qs': address_qs,
     }
     return render(request, 'cart/checkout.html', context)
+
+
+def checkout_success(request):
+    return render(request, 'cart/checkout_success.html')

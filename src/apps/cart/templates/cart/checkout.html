@@ -51,15 +51,57 @@
                 </div>
             </div>
         {% else %}
-            <h1>Checkout</h1>
-            <p>SubTotal: {{ object.cart.subtotal }}</p>
-            <p>Tax: {{ object.cart.tax }} %</p>
-            <p>Shipping Charges: {{ object.shipping_charges }}</p>
-            <p>Total: {{ object.total }}</p>
-            <form method="POST" class="form">
-                {% csrf_token %}
-                <button class="btn btn-danger" type="submit">Proceed To Checkout</button>
-            </form>
+            <div class="row">
+                <div class="col-10 col-md-6 mx-auto">
+                    <h4 class="text-center">Finalize Checkout</h4>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-5 mx-auto mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in object.cart.products.all %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ product.title }}</td>
+                                    <td>{{ product.price }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="2" rowspan="4"></td>
+                                <td><b>SubTotal:</b> {{ object.cart.subtotal }}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-top: None;"><b>Tax:</b> {{ object.cart.tax }} %</td>
+                            </tr>
+                            <tr>
+                                <td style="border-top: None;"><b>Shipping Charges:</b> {{ object.shipping_charges }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-top: None;"><b>Total:</b> ₹ {{ object.total }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-md-5 mx-auto mb-4">
+                    <div class="jumbotron">
+                        <p>{{ object.shipping_address.get_address }}</p>
+                    </div>
+                    <form method="POST" class="form">
+                        {% csrf_token %}
+                        <button class="btn btn-success" type="submit">Proceed To Checkout</button>
+                    </form>
+                </div>
+            </div>
         {% endif %}
     {% endif %}
 </div>
